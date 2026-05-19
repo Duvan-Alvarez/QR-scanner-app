@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
+  swcMinify: true,
+  webpack: (config, { isServer }) => {
+    return config;
+  },
 };
 
 export default nextConfig;
