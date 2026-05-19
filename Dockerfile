@@ -1,23 +1,37 @@
-FROM node:20-bullseye
+FROM node:20-bullseye AS deps
 
-# Create app directory
 WORKDIR /app
 
-# Install app dependencies
 COPY package.json package-lock.json ./
-RUN npm ci --production=false
+RUN npm ci
 
-# Copy source
+FROM node:20-bullseye AS builder
+
+WORKDIR /app
+
+ENV NEXT_TELEMETRY_DISABLED=1
+
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-
-# Ensure environment directory for sqlite exists when using volume path
-RUN mkdir -p /app/data
-
-# Build the Next.js app
 RUN npm run build
 
+FROM node:20-bullseye AS runner
+
+WORKDIR /app
+
 ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+ENV DATABASE_PATH=/app/data/database.sqlite
+
+RUN mkdir -p /app/data
+
+COPY --from=builder /app/package.json /app/package-lock.json ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/next.config.mjs ./next.config.mjs
 
 EXPOSE 3000
 

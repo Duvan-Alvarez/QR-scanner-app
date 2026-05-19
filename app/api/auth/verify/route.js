@@ -8,7 +8,7 @@ export async function GET(request) {
     const cookie = request.cookies.get('auth_user');
 
     if (!cookie) {
-      return NextResponse.json({ success: false, message: 'No autenticado' }, { status: 401 });
+      return NextResponse.json({ success: false, message: 'No autenticado' });
     }
 
     const user = JSON.parse(cookie.value);

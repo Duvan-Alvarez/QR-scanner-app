@@ -1,15 +1,19 @@
-version: '3.8'
 services:
   web:
     build: .
     image: qr-scanner-app:latest
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "${PORT:-3000}:3000"
     environment:
-      - NODE_ENV=production
-      - PORT=3000
-      - DATABASE_PATH=/app/data/database.sqlite
+      NODE_ENV: production
+      PORT: 3000
+      NEXT_TELEMETRY_DISABLED: ${NEXT_TELEMETRY_DISABLED:-1}
+      DATABASE_PATH: ${DATABASE_PATH:-/app/data/database.sqlite}
+      DEFAULT_ADMIN_USERNAME: ${DEFAULT_ADMIN_USERNAME:-admin}
+      DEFAULT_ADMIN_PASSWORD: ${DEFAULT_ADMIN_PASSWORD:-admin123}
+      DEFAULT_SCANNER_USERNAME: ${DEFAULT_SCANNER_USERNAME:-scanner}
+      DEFAULT_SCANNER_PASSWORD: ${DEFAULT_SCANNER_PASSWORD:-scanner123}
     volumes:
       - ./data:/app/data
     healthcheck:
