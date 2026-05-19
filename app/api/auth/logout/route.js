@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export async function POST(request) {
   const response = NextResponse.json({ success: true, message: 'Logout exitoso' });
   response.cookies.set('auth_user', '', {

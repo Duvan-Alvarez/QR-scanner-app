@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import db from '@/lib/db';
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 function getAuthUser(request) {
   const cookie = request.cookies.get('auth_user');
   if (!cookie) return null;

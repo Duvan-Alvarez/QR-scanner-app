@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import db from '@/lib/db';
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export async function GET() {
   try {
     // 1. Obtener Totales Generales
