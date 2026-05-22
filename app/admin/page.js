@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
@@ -36,18 +36,16 @@ function AdminContent() {
     totalPages: 0
   });
 
-  useEffect(() => {
-    fetchCodes();
-  }, [pagination.page]);
-
   const handleAutoScan = (scannedCode) => {
     setNewCode(prev => ({ ...prev, code: scannedCode }));
     setStatus({ type: 'success', message: '¡Código capturado del escáner!' });
     document.getElementById('associated_data_input')?.focus();
   };
 
-  const fetchCodes = async () => {
-    setLoading(true);
+  const fetchCodes = useCallback(async ({ showLoading = true } = {}) => {
+    if (showLoading) {
+      setLoading(true);
+    }
     try {
       const queryString = new URLSearchParams({
         page: pagination.page,
@@ -70,7 +68,11 @@ function AdminContent() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [pagination.limit, pagination.page]);
+
+  useEffect(() => {
+    fetchCodes({ showLoading: false });
+  }, [fetchCodes]);
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= pagination.totalPages) {

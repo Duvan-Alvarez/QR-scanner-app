@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Header } from '@/components/Header';
 import { Plus, Power, Key, Loader2 } from 'lucide-react';
@@ -11,8 +11,10 @@ function UsersAdmin() {
   const [form, setForm] = useState({ username: '', password: '', role: 'scanner' });
   const [status, setStatus] = useState({ type: '', message: '' });
 
-  const fetchUsers = async () => {
-    setLoading(true);
+  const fetchUsers = useCallback(async ({ showLoading = true } = {}) => {
+    if (showLoading) {
+      setLoading(true);
+    }
     try {
       const res = await fetch('/api/users');
       const data = await res.json();
@@ -22,9 +24,11 @@ function UsersAdmin() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  useEffect(() => { fetchUsers(); }, []);
+  useEffect(() => {
+    fetchUsers({ showLoading: false });
+  }, [fetchUsers]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
