@@ -20,7 +20,8 @@ import {
   History,
   Clock,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Power
 } from 'lucide-react';
 
 function AdminContent() {
@@ -125,6 +126,27 @@ function AdminContent() {
     }
   };
 
+  const handleToggleActive = async (item) => {
+    try {
+      const res = await fetch('/api/codes', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: item.id, active: item.active === 0 }),
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        fetchCodes({ showLoading: false });
+        setStatus({ type: 'success', message: data.message });
+      } else {
+        setStatus({ type: 'error', message: data.message || 'Error al actualizar' });
+      }
+    } catch (error) {
+      console.error('Error toggling code:', error);
+      setStatus({ type: 'error', message: 'Error de conexiÃ³n' });
+    }
+  };
+
   return (
     <main className="container mx-auto px-4 py-8 max-w-4xl">
       <Header />
@@ -179,7 +201,7 @@ function AdminContent() {
                     required
                     value={newCode.code}
                     onChange={(e) => setNewCode({ ...newCode, code: e.target.value })}
-                    className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-2.5 pl-10 pr-4 text-white focus:outline-none focus:border-blue-500 transition-colors font-mono text-sm shadow-inner"
+                    className="h-12 w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-blue-500 transition-colors font-mono text-sm shadow-inner"
                     placeholder="Escanea aquí..."
                   />
                 </div>
@@ -197,7 +219,7 @@ function AdminContent() {
                     required
                     value={newCode.associated_data}
                     onChange={(e) => setNewCode({ ...newCode, associated_data: e.target.value })}
-                    className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-2.5 pl-10 pr-4 text-white focus:outline-none focus:border-blue-500 transition-colors text-sm shadow-inner"
+                    className="h-12 w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-blue-500 transition-colors text-sm shadow-inner"
                     placeholder="Ej: Nombre de usuario"
                   />
                 </div>
@@ -278,6 +300,9 @@ function AdminContent() {
                       <div className="flex-1 min-w-0 mr-4">
                         <div className="flex items-center gap-3">
                           <div className="font-mono text-blue-400 font-bold truncate text-sm">{item.code}</div>
+                          <div className={`${item.active === 0 ? 'bg-red-500/10 text-red-400 border-red-500/20' : 'bg-blue-500/10 text-blue-400 border-blue-500/20'} text-[10px] font-black px-2 py-0.5 rounded-full border flex items-center gap-1 shadow-sm`}>
+                            {item.active === 0 ? 'INACTIVO' : 'ACTIVO'}
+                          </div>
                           <div className="bg-emerald-500/10 text-emerald-400 text-[10px] font-black px-2 py-0.5 rounded-full border border-emerald-500/20 flex items-center gap-1 shadow-sm">
                             {item.scan_count || 0}
                           </div>
@@ -287,6 +312,13 @@ function AdminContent() {
                           {item.associated_data}
                         </div>
                       </div>
+                      <button
+                        onClick={() => handleToggleActive(item)}
+                        className={`${item.active === 0 ? 'text-slate-600 hover:text-emerald-400 hover:bg-emerald-400/10' : 'text-slate-600 hover:text-amber-400 hover:bg-amber-400/10'} p-2.5 rounded-xl transition-all shadow-sm active:scale-90`}
+                        title={item.active === 0 ? 'Activar' : 'Inactivar'}
+                      >
+                        <Power size={18} />
+                      </button>
                       <button
                         onClick={() => handleDelete(item.id)}
                         className="p-2.5 text-slate-600 hover:text-red-400 hover:bg-red-400/10 rounded-xl transition-all shadow-sm active:scale-90"

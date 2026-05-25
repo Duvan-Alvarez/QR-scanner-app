@@ -65,6 +65,34 @@ export async function POST(request) {
   }
 }
 
+// PATCH a code status
+export async function PATCH(request) {
+  try {
+    const body = await request.json();
+    const { id, active } = body;
+
+    if (!id || typeof active !== 'boolean') {
+      return NextResponse.json({ success: false, message: 'ID y estado son requeridos' }, { status: 400 });
+    }
+
+    const result = db
+      .prepare('UPDATE valid_codes SET active = ? WHERE id = ?')
+      .run(active ? 1 : 0, id);
+
+    if (result.changes === 0) {
+      return NextResponse.json({ success: false, message: 'Codigo no encontrado' }, { status: 404 });
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: active ? 'Codigo activado' : 'Codigo inactivado',
+    });
+  } catch (error) {
+    console.error('Error updating code:', error);
+    return NextResponse.json({ success: false, message: 'Error al actualizar codigo' }, { status: 500 });
+  }
+}
+
 // DELETE a code
 export async function DELETE(request) {
   try {

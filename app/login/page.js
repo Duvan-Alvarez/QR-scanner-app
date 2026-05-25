@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
-import { LogIn, AlertCircle, Loader2, ShieldCheck } from 'lucide-react';
+import { AlertCircle, Loader2, Lock, LogIn, ShieldCheck, User } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -39,7 +39,7 @@ export default function LoginPage() {
       <main className="container relative min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="animate-spin text-blue-500" size={48} />
-          <p className="text-slate-400">Verificando sesión...</p>
+          <p className="text-slate-400">Verificando sesion...</p>
         </div>
       </main>
     );
@@ -61,28 +61,34 @@ export default function LoginPage() {
               <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
                 Usuario
               </label>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Ingresa tu usuario"
-                className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-blue-500 transition-colors shadow-inner"
-                disabled={submitting}
-              />
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="Ingresa tu usuario"
+                  className="h-12 w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 pl-11 pr-4 text-white focus:outline-none focus:border-blue-500 transition-colors shadow-inner"
+                  disabled={submitting}
+                />
+              </div>
             </div>
 
             <div>
               <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
-                Contraseña
+                Contrasena
               </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Ingresa tu contraseña"
-                className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-blue-500 transition-colors shadow-inner"
-                disabled={submitting}
-              />
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Ingresa tu contrasena"
+                  className="h-12 w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 pl-11 pr-4 text-white focus:outline-none focus:border-blue-500 transition-colors shadow-inner"
+                  disabled={submitting}
+                />
+              </div>
             </div>
 
             {error && (
@@ -95,7 +101,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={submitting || !username || !password}
-              className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-bold py-3 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 active:scale-95 mt-6"
+              className="h-12 w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-bold rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 active:scale-95 mt-6"
             >
               {submitting ? <Loader2 className="animate-spin" size={20} /> : <LogIn size={20} />}
               Ingresar
@@ -103,7 +109,7 @@ export default function LoginPage() {
           </form>
 
           <div className="mt-8 pt-6 border-t border-white/10">
-            <p className="text-xs text-slate-500 text-center">Sistema de validación QR</p>
+            <p className="text-xs text-slate-500 text-center">Sistema de validacion QR</p>
           </div>
         </div>
       </div>

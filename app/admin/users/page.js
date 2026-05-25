@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Header } from '@/components/Header';
-import { Plus, Power, Key, Loader2 } from 'lucide-react';
+import { Key, Loader2, Lock, Plus, Power, Shield, User } from 'lucide-react';
 
 function UsersAdmin() {
   const [users, setUsers] = useState([]);
@@ -78,22 +78,44 @@ function UsersAdmin() {
           <h2 className="text-lg font-semibold mb-4">Crear / Actualizar Usuario</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs text-slate-400 uppercase font-bold mb-2">Usuario</label>
-              <input value={form.username} onChange={(e) => setForm({ ...form, username: e.target.value })} className="w-full p-2 rounded-xl bg-slate-900/50 border border-slate-700 text-white" />
+              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Usuario</label>
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                <input
+                  value={form.username}
+                  onChange={(e) => setForm({ ...form, username: e.target.value })}
+                  className="h-12 w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 pl-11 pr-4 text-white focus:outline-none focus:border-blue-500 transition-colors shadow-inner"
+                />
+              </div>
             </div>
             <div>
-              <label className="block text-xs text-slate-400 uppercase font-bold mb-2">Contraseña</label>
-              <input type="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} className="w-full p-2 rounded-xl bg-slate-900/50 border border-slate-700 text-white" />
+              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Contraseña</label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                <input
+                  type="password"
+                  value={form.password}
+                  onChange={(e) => setForm({ ...form, password: e.target.value })}
+                  className="h-12 w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 pl-11 pr-4 text-white focus:outline-none focus:border-blue-500 transition-colors shadow-inner"
+                />
+              </div>
             </div>
             <div>
-              <label className="block text-xs text-slate-400 uppercase font-bold mb-2">Rol</label>
-              <select value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} className="w-full p-2 rounded-xl bg-slate-900/50 border border-slate-700 text-white">
-                <option value="scanner">scanner (solo escanear)</option>
-                <option value="admin">admin</option>
-              </select>
+              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Rol</label>
+              <div className="relative">
+                <Shield className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                <select
+                  value={form.role}
+                  onChange={(e) => setForm({ ...form, role: e.target.value })}
+                  className="h-12 w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 pl-11 pr-4 text-white focus:outline-none focus:border-blue-500 transition-colors shadow-inner"
+                >
+                  <option value="scanner">scanner (solo escanear)</option>
+                  <option value="admin">admin</option>
+                </select>
+              </div>
             </div>
 
-            <button type="submit" className="w-full py-2 bg-blue-600 text-white rounded-xl flex items-center justify-center gap-2">
+            <button type="submit" className="h-12 w-full bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 active:scale-95">
               <Plus /> Guardar
             </button>
 

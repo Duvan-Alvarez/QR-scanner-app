@@ -70,7 +70,7 @@ function HomeContent() {
       console.error('Error in verification:', error);
       setScanResult({
         type: 'error',
-        data: { message: 'Error de conexión con el servidor.' },
+        data: { message: 'Error de conexion con el servidor.' },
       });
     } finally {
       setIsLoading(false);
@@ -115,7 +115,7 @@ function HomeContent() {
         </div>
 
         <p className="max-w-md text-slate-400 text-lg mb-4">
-          Escanea el código QR para verificar la autenticidad y acceder a los datos registrados.
+          Escanea el codigo QR para verificar la autenticidad y acceder a los datos registrados.
         </p>
 
         <div className="flex flex-col items-center mb-4 animate-in fade-in zoom-in duration-500">
@@ -139,7 +139,7 @@ function HomeContent() {
                       <p className="text-sm text-emerald-100 truncate">{scanResult.data.data}</p>
                       <div className="flex items-center gap-1 text-emerald-300/80 text-xs font-medium mt-1">
                         <History size={12} />
-                        <span>Ingresos de este código: <strong>{scanResult.data.individual_scans}</strong></span>
+                        <span>Ingresos de este codigo: <strong>{scanResult.data.individual_scans}</strong></span>
                       </div>
                     </div>
                   </div>
@@ -163,7 +163,7 @@ function HomeContent() {
               <h2 className="text-2xl font-bold text-white mb-2">Acceso Denegado</h2>
 
               <div className="alert alert-error w-full mt-4">
-                <span className="uppercase text-xs font-bold tracking-wider opacity-80">Razón</span>
+                <span className="uppercase text-xs font-bold tracking-wider opacity-80">Razon</span>
                 <span className="alert-data text-center">{scanResult.data.message}</span>
               </div>
 
