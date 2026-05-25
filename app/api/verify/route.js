@@ -4,10 +4,18 @@ import db from '@/lib/db';
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
+function normalizeScannerCode(code) {
+  return String(code)
+    .trim()
+    .replace(/^httpsÑ--/i, 'https://')
+    .replace(/^httpÑ--/i, 'http://')
+    .replace(/-qr-/i, '/qr/');
+}
+
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { code } = body;
+    const code = normalizeScannerCode(body.code);
 
     if (!code) {
       return NextResponse.json({ success: false, message: 'No se proporcionó un código' }, { status: 400 });

@@ -3,12 +3,18 @@
 import { useEffect, useRef } from 'react';
 import { ScanLine, Keyboard } from 'lucide-react';
 
-export default function QRScanner({ onScan }) {
+export default function QRScanner({ onScan, active = true }) {
   const bufferRef = useRef("");
   const timeoutRef = useRef(null);
   const lastKeyTimeRef = useRef(0);
 
   useEffect(() => {
+    if (!active) {
+      bufferRef.current = "";
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      return;
+    }
+
     const handleKeyDown = (e) => {
       // Ignore functional keys except Enter
       if (e.key.length > 1 && e.key !== 'Enter') return;
@@ -57,7 +63,7 @@ export default function QRScanner({ onScan }) {
       window.removeEventListener('keydown', handleKeyDown);
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, [onScan]);
+  }, [onScan, active]);
 
   return (
     <div className="flex flex-col items-center w-full py-12">
